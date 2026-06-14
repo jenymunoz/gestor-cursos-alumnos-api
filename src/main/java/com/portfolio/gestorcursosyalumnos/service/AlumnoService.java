@@ -21,6 +21,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -49,7 +50,7 @@ public class AlumnoService {
 
     public void validarFechaNacimiento(LocalDate fecha){
         LocalDate hoy = LocalDate.now();
-        int diferencia = hoy.getYear()-fecha.getYear();
+        int diferencia = Period.between(fecha, hoy).getYears();
 
         if (diferencia<5 || diferencia>75) {
             throw new IllegalArgumentException(
