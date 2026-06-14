@@ -26,7 +26,7 @@ public class CursoService {
 
     //CREATE
     public void registrarCurso(CrearCursoDto dto){
-        if (repository.findByName(dto.getNombre()).isPresent()){
+        if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
             throw new CursoYaRegistradoException(
                     "El curso ya fue registrado. Los cursos deben tener un nombre único.");
         }
@@ -51,12 +51,12 @@ public class CursoService {
     }
 
     public List<RespuestaAlumnoDto> alumnosDeUnCursoPorId(Long id){
-        return repository.findAlumnosByIdCurso(id).stream()
+        return repository.buscarAlumnosPorIdCurso(id).stream()
                 .map(AlumnoMapper::alumnoToDto).toList();
     }
 
     public List<RespuestaAlumnoDto> alumnosDeUnCursoPorNombre(String nombre){
-        return repository.findAlumnosByNameCurso(nombre).stream()
+        return repository.buscarAlumnosPorNombreCurso(nombre).stream()
                 .map(AlumnoMapper::alumnoToDto).toList();
     }
 
@@ -66,7 +66,7 @@ public class CursoService {
     }
 
     public Curso encontrarPorNombre(String nombre){
-        return repository.findByName(nombre)
+        return repository.buscarPorNombre(nombre)
                 .orElseThrow(()-> new CursoNoEncontradoException("El curso no fue encontrado"));
     }
 
@@ -85,7 +85,7 @@ public class CursoService {
         Curso original = encontrarPorId(id);
 
         if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
-            if (repository.findByName(dto.getNombre()).isPresent()){
+            if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
             throw new CursoYaRegistradoException(
                     "El curso ya fue registrado. Los nombres deben ser únicos");
             }
@@ -100,7 +100,7 @@ public class CursoService {
         Curso original = encontrarPorNombre(nombre);
 
         if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
-            if (repository.findByName(dto.getNombre()).isPresent()){
+            if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
                 throw new CursoYaRegistradoException(
                         "El curso ya fue registrado. Los nombres deben ser únicos");
             }

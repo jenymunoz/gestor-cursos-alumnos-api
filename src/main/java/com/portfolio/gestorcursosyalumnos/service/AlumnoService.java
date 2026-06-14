@@ -34,7 +34,7 @@ public class AlumnoService {
     //CREATE
     public void registrarAlumno(CrearAlumnoDto dto){
         String emailDto = dto.getEmail().toLowerCase().trim();
-        if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
+        if (alumnoRepository.buscarPorEmail(dto.getEmail()).isPresent()){
             throw new AlumnoYaRegistradoException("El alumno ya fue registrado.");
         }
 
@@ -75,13 +75,13 @@ public class AlumnoService {
     }
 
     public RespuestaCursoDto alumnoLeerCurso(String email){
-        Curso curso = alumnoRepository.findCurso(email)
+        Curso curso = alumnoRepository.buscarCurso(email)
                 .orElseThrow(() -> new CursoNoEncontradoException("No se encontró el curso."));
         return CursoMapper.cursoToDto(curso);
     }
 
     public Alumno findAlumnoByEmail(String email){
-        return alumnoRepository.findByEmail(email)
+        return alumnoRepository.buscarPorEmail(email)
                 .orElseThrow(() -> new AlumnoNoEncontradoException(
                         "El alumno no fue encontrado."));
     }
@@ -109,7 +109,7 @@ public class AlumnoService {
             String emailDto = dto.getEmail().toLowerCase().trim();
 
             if (!emailDto.equals(alumno.getEmail())){
-                if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
+                if (alumnoRepository.buscarPorEmail(dto.getEmail()).isPresent()){
                     throw new AlumnoYaRegistradoException(
                             "Ya existe un alumno con este email.");
                 }
@@ -132,7 +132,7 @@ public class AlumnoService {
             String emailDto = dto.getEmail().toLowerCase().trim();
 
             if (!emailDto.equals(alumno.getEmail())){
-                if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
+                if (alumnoRepository.buscarPorEmail(dto.getEmail()).isPresent()){
                     throw new AlumnoYaRegistradoException(
                             "Ya existe un alumno con este email.");
                 }

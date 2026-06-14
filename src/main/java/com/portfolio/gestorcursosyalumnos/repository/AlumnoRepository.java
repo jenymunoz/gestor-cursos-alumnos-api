@@ -10,9 +10,9 @@ import java.util.Optional;
 public interface AlumnoRepository extends JpaRepository<Alumno, Long> {
 
     @Query("Select a from Alumno a WHERE a.email= :email")
-    Optional<Alumno> findByEmail(String email);
+    Optional<Alumno> buscarPorEmail(String email);
 
     @Query("Select a.curso from Alumno a WHERE a.email=:email")
-    Optional<Curso> findCurso(String email);
+    Optional<Curso> buscarCurso(String email);
 
 }

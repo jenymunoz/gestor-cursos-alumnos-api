@@ -11,13 +11,13 @@ import java.util.Optional;
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
     @Query("SELECT c FROM Curso c WHERE c.nombre=:name")
-    Optional<Curso> findByName(String name);
+    Optional<Curso> buscarPorNombre(String name);
 
     @Query("SELECT c.alumnos FROM Curso c WHERE c.id=:id")
-    List<Alumno> findAlumnosByIdCurso(Long id);
+    List<Alumno> buscarAlumnosPorIdCurso(Long id);
 
     @Query("SELECT c.alumnos FROM Curso c WHERE c.nombre=:name")
-    List<Alumno> findAlumnosByNameCurso(String name);
+    List<Alumno> buscarAlumnosPorNombreCurso(String name);
 
 
 }
