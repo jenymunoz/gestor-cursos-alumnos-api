@@ -28,13 +28,13 @@ import java.util.List;
 @AllArgsConstructor
 public class AlumnoService {
 
-    private final AlumnoRepository repository;
+    private final AlumnoRepository alumnoRepository;
     private final CursoRepository cursoRepository;
 
     //CREATE
     public void registrarAlumno(CrearAlumnoDto dto){
         String emailDto = dto.getEmail().toLowerCase().trim();
-        if (repository.findByEmail(dto.getEmail()).isPresent()){
+        if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
             throw new AlumnoYaRegistradoException("El alumno ya fue registrado.");
         }
 
@@ -45,7 +45,7 @@ public class AlumnoService {
 
         Alumno alumno = AlumnoMapper.dtoToAlumno(dto, curso);
         alumno.setEmail(emailDto);
-        repository.save(alumno);
+        alumnoRepository.save(alumno);
     }
 
     public void validarFechaNacimiento(LocalDate fecha){
@@ -60,34 +60,34 @@ public class AlumnoService {
 
     //READ
     public List<RespuestaAlumnoDto> leerAlumnos(){
-        return repository.findAll(Sort.by("curso").descending()).stream()
+        return alumnoRepository.findAll(Sort.by("fechaNacimiento").descending()).stream()
                 .map(AlumnoMapper::alumnoToDto)
                 .toList();
     }
 
     public List<RespuestaAlumnoDto> leerAlumnosPorPagina(int pagina, int dimension){
-        Sort sort = Sort.by(Sort.Direction.DESC, "nombre");
+        Sort sort = Sort.by(Sort.Direction.DESC, "fechaNacimiento");
         Pageable pageable = PageRequest.of(pagina, dimension, sort);
 
-        return repository.findAll(pageable).stream()
+        return alumnoRepository.findAll(pageable).stream()
                 .map(AlumnoMapper::alumnoToDto)
                 .toList();
     }
 
     public RespuestaCursoDto alumnoLeerCurso(String email){
-        Curso curso = repository.findCurso(email)
+        Curso curso = alumnoRepository.findCurso(email)
                 .orElseThrow(() -> new CursoNoEncontradoException("No se encontró el curso."));
         return CursoMapper.cursoToDto(curso);
     }
 
     public Alumno findAlumnoByEmail(String email){
-        return repository.findByEmail(email)
+        return alumnoRepository.findByEmail(email)
                 .orElseThrow(() -> new AlumnoNoEncontradoException(
                         "El alumno no fue encontrado."));
     }
 
     public Alumno findAlumnoById(Long id){
-        return repository.findById(id)
+        return alumnoRepository.findById(id)
                 .orElseThrow(() -> new AlumnoNoEncontradoException(
                         "El alumno no fue encontrado."));
     }
@@ -105,7 +105,7 @@ public class AlumnoService {
     public void actualizarAlumnoPorEmail(String email, AlumnoActualizacionDto dto){
         Alumno alumno = findAlumnoByEmail(email);
 
-        if ((!dto.getEmail().isEmpty())&&repository.findByEmail(dto.getEmail()).isPresent()){
+        if ((!dto.getEmail().isEmpty())&& alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
             throw new AlumnoYaRegistradoException(
                     "Ya existe un alumno con este email.");
         }
@@ -115,7 +115,7 @@ public class AlumnoService {
         }
         Alumno actualizacion =
         AlumnoMapper.updateToAlumno(dto,alumno);
-        repository.save(actualizacion);
+        alumnoRepository.save(actualizacion);
     }
 
     @Transactional
@@ -123,7 +123,7 @@ public class AlumnoService {
         Alumno alumno = findAlumnoById(id);
 
         if (dto.getEmail()!=null){
-            if (repository.findByEmail(dto.getEmail()).isPresent()){
+            if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
                 throw new AlumnoYaRegistradoException(
                         "Ya existe un alumno con este email.");
             }
@@ -134,18 +134,18 @@ public class AlumnoService {
         }
         Alumno actualizacion =
                 AlumnoMapper.updateToAlumno(dto,alumno);
-        repository.save(actualizacion);
+        alumnoRepository.save(actualizacion);
     }
 
     //DELETE
     public void eliminarPorEmail(String email){
         Alumno alumno = findAlumnoByEmail(email);
-        repository.delete(alumno);
+        alumnoRepository.delete(alumno);
     }
 
     public void eliminarPorId(Long id){
         Alumno alumno = findAlumnoById(id);
-        repository.delete(alumno);
+        alumnoRepository.delete(alumno);
     }
 
 }
