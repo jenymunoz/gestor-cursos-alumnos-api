@@ -12,6 +12,7 @@ import com.portfolio.gestorcursosyalumnos.mapper.CursoMapper;
 import com.portfolio.gestorcursosyalumnos.model.Alumno;
 import com.portfolio.gestorcursosyalumnos.model.Curso;
 import com.portfolio.gestorcursosyalumnos.repository.AlumnoRepository;
+import com.portfolio.gestorcursosyalumnos.repository.CursoRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -27,21 +28,22 @@ import java.util.List;
 public class AlumnoService {
 
     private final AlumnoRepository repository;
-    private final CursoService cursoService;
+    private final CursoRepository cursoRepository;
 
     //CREATE
     public void registrarAlumno(CrearAlumnoDto dto){
-
+        String emailDto = dto.getEmail().toLowerCase().trim();
         if (repository.findByEmail(dto.getEmail()).isPresent()){
             throw new AlumnoYaRegistradoException("El alumno ya fue registrado.");
         }
 
         validarFechaNacimiento(dto.getFechaNacimiento());
 
-        Curso curso = cursoService.encontrarPorId(dto.getIdCurso());
-        System.out.println("Curso elegido: "+curso.getNombre());
+        Curso curso = cursoRepository.findById(dto.getIdCurso())
+                .orElseThrow(()-> new CursoNoEncontradoException("El curso no fue encontrado"));
 
         Alumno alumno = AlumnoMapper.dtoToAlumno(dto, curso);
+        alumno.setEmail(emailDto);
         repository.save(alumno);
     }
 

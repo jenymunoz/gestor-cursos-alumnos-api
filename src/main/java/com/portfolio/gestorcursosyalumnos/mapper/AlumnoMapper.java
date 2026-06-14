@@ -11,7 +11,6 @@ public class AlumnoMapper {
     public static Alumno dtoToAlumno(CrearAlumnoDto dto, Curso curso){
         return Alumno.builder()
                 .nombre(dto.getNombre())
-                .email(dto.getEmail())
                 .fechaNacimiento(dto.getFechaNacimiento())
                 .curso(curso)
                 .build();
