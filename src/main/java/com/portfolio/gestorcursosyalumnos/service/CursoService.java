@@ -51,8 +51,7 @@ public class CursoService {
     }
 
     public List<RespuestaAlumnoDto> alumnosDeUnCursoPorId(Long id){
-        Pageable pageable = PageRequest.of(0, 2);
-        return repository.findAlumnosByIdCurso(pageable ,id).stream()
+        return repository.findAlumnosByIdCurso(id).stream()
                 .map(AlumnoMapper::alumnoToDto).toList();
     }
 

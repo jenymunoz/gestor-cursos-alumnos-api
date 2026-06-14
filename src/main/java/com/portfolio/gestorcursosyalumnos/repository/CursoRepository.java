@@ -14,10 +14,10 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
     @Query("SELECT c FROM Curso c WHERE c.nombre=:name")
     Optional<Curso> findByName(String name);
 
-    @Query("SELECT c.alumnos FROM Curso c JOIN c.alumnos a order by a.fechaNacimiento DESC")
-    List<Alumno> findAlumnosByIdCurso(Pageable pageable, Long id);
+    @Query("SELECT c.alumnos FROM Curso c WHERE c.id=:id")
+    List<Alumno> findAlumnosByIdCurso(Long id);
 
-    @Query("SELECT c.alumnos FROM Curso c JOIN c.alumnos a")
+    @Query("SELECT c.alumnos FROM Curso c WHERE c.nombre=:name")
     List<Alumno> findAlumnosByNameCurso(String name);
 
 
