@@ -21,10 +21,6 @@ public class AlumnoMapper {
             alumno.setNombre(dto.getNombre());
         }
 
-        if (dto.getEmail()!=null&&!dto.getEmail().isEmpty()){
-            alumno.setEmail(dto.getEmail());
-        }
-
         if (dto.getFechaNacimiento()!=null){
             alumno.setFechaNacimiento(dto.getFechaNacimiento());
         }

@@ -105,36 +105,46 @@ public class AlumnoService {
     public void actualizarAlumnoPorEmail(String email, AlumnoActualizacionDto dto){
         Alumno alumno = findAlumnoByEmail(email);
 
-        if ((!dto.getEmail().isEmpty())&& alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
-            throw new AlumnoYaRegistradoException(
-                    "Ya existe un alumno con este email.");
-        }
+        if (dto.getEmail()!=null&&!dto.getEmail().isBlank()){
+            String emailDto = dto.getEmail().toLowerCase().trim();
 
-        if (dto.getFechaNacimiento()!=null){
-            validarFechaNacimiento(dto.getFechaNacimiento());
-        }
-        Alumno actualizacion =
-        AlumnoMapper.updateToAlumno(dto,alumno);
-        alumnoRepository.save(actualizacion);
-    }
-
-    @Transactional
-    public void actualizarAlumnoPorId(Long id, AlumnoActualizacionDto dto){
-        Alumno alumno = findAlumnoById(id);
-
-        if (dto.getEmail()!=null){
-            if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
-                throw new AlumnoYaRegistradoException(
-                        "Ya existe un alumno con este email.");
+            if (!emailDto.equals(alumno.getEmail())){
+                if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
+                    throw new AlumnoYaRegistradoException(
+                            "Ya existe un alumno con este email.");
+                }
+                alumno.setEmail(emailDto);
             }
         }
 
         if (dto.getFechaNacimiento()!=null){
             validarFechaNacimiento(dto.getFechaNacimiento());
         }
-        Alumno actualizacion =
-                AlumnoMapper.updateToAlumno(dto,alumno);
-        alumnoRepository.save(actualizacion);
+
+        AlumnoMapper.updateToAlumno(dto,alumno);
+    }
+
+    @Transactional
+    public void actualizarAlumnoPorId(Long id, AlumnoActualizacionDto dto){
+        Alumno alumno = findAlumnoById(id);
+
+        if (dto.getEmail()!=null&&!dto.getEmail().isBlank()){
+            String emailDto = dto.getEmail().toLowerCase().trim();
+
+            if (!emailDto.equals(alumno.getEmail())){
+                if (alumnoRepository.findByEmail(dto.getEmail()).isPresent()){
+                    throw new AlumnoYaRegistradoException(
+                            "Ya existe un alumno con este email.");
+                }
+                alumno.setEmail(emailDto);
+            }
+        }
+
+        if (dto.getFechaNacimiento()!=null){
+            validarFechaNacimiento(dto.getFechaNacimiento());
+        }
+
+        AlumnoMapper.updateToAlumno(dto,alumno);
     }
 
     //DELETE
