@@ -30,6 +30,7 @@ public class AlumnoController {
     //CREATE
     @Operation(summary = "Registrar un nuevo alumno",
     description = "Debes tener en cuenta: no se admiten alumnos menores de 5 años, " +
+            "el nombre no debe tener menos de 5 o más de 50 caracteres, " +
             "los alumnos deben tener un email único y es muy importante saber que " +
             "debe existir un curso para que el alumno pueda ser matriculado.",
     tags={"Registro"})
@@ -128,7 +129,8 @@ public class AlumnoController {
     @Operation(summary = "Actualizar un alumno por Id",
             description = "Ingresa el Id del alumno y el o los atributos que quieres actualizar. " +
                     "Atributos que puedes actualizar: nombre, email, curso y fecha de nacimiento. " +
-                    "No se permiten alumnos menores de 5 años.",
+                    "No se permiten alumnos menores de 5 años, "+
+                    "el nombre no debe tener menos de 5 o más de 50 caracteres.",
             tags={"Actualización"})
     @Parameter(name = "id", description = "Los Id comienzan desde 1", required = true, example = "1")
     @ApiResponses(value = {
@@ -148,7 +150,8 @@ public class AlumnoController {
     @Operation(summary = "Actualizar un alumno por email",
             description = "Ingresa el email del alumno y el o los atributos que quieres actualizar. " +
                     "Atributos que puedes actualizar: nombre, email, curso y fecha de nacimiento. " +
-                    "No se permiten alumnos menores de 5 años.",
+                    "No se permiten alumnos menores de 5 años, "+
+                    "el nombre no debe tener menos de 5 o más de 50 caracteres, ",
             tags={"Actualización"})
     @Parameter(name = "email", description = "Debes conocer el email del alumno", required = true, example = "ejemplo2@gmail.com")
     @ApiResponses(value = {

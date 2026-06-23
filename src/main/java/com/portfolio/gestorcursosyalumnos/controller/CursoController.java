@@ -30,12 +30,13 @@ public class CursoController {
     //CREATE
     @Operation(summary = "Registrar un nuevo curso",
             description = "Antes de registrar un nuevo curso debes saber: " +
-                    "los nombres de los cursos deben ser únicos, " +
-                    "la duración de los cursos está en horas, un curso no puede durar menos de una hora",
+                    "los nombres de los cursos deben ser únicos y " +
+                    "no tener menos de 5 o más de 100 caracteres, " +
+                    "la duración de los cursos debe ser escrita en horas, un curso debe durar almenos una hora",
     tags = {"Registro"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Nuevo curso registrado con exito."),
-            @ApiResponse(responseCode = "409", description = "El curso ya fue registrado ateriormente."),
+            @ApiResponse(responseCode = "409", description = "El curso ya fue registrado anteriormente."),
             @ApiResponse(responseCode = "400", description = "Valor de atributo incorrecto")
     })
     @PostMapping("/curso")
@@ -139,8 +140,8 @@ public class CursoController {
     @Operation(summary = "Actualizar un curso por Id",
             description = "Ingresa el Id del curso y el o los atributos que quieres actualizar. " +
                     "Atributos que puedes actualizar: nombre, duración y descripción. " +
-                    "Los nombres de los cursos deben ser únicos y descriptivos, " +
-                    "un curso debe durar al menos una hora, la descripción debe ser breve.",
+                    "Los nombres de los cursos deben ser únicos y descriptivos y no tener menos de 2 o más de 50 caracteres, " +
+                    "un curso debe durar al menos una hora, la descripción debe ser breve y no debe tener menos de 5 o más de 100 caracteres.",
             tags={"Actualización"})
     @Parameter(name = "id", description = "Los Id comienzan desde 1", required = true, example = "1")
     @ApiResponses(value = {
@@ -158,8 +159,8 @@ public class CursoController {
     @Operation(summary = "Actualizar un curso por nombre",
             description = "Ingresa el nombre del curso y el o los atributos que quieres actualizar. " +
                     "Atributos que puedes actualizar: nombre, duración y descripción. " +
-                    "Los nombres de los cursos deben ser únicos y descriptivos, " +
-                    "un curso debe durar al menos una hora, la descripción debe ser breve.",
+                    "Los nombres de los cursos deben ser únicos y descriptivos y no tener menos de 2 o más de 50 caracteres, " +
+                    "un curso debe durar al menos una hora, la descripción debe ser breve y no debe tener menos de 5 o más de 100 caracteres.",
             tags={"Actualización"})
     @Parameter(name = "nombre", description = "Ingresa el nombre del curso", required = true, example = "Diseño")
     @ApiResponses(value = {
