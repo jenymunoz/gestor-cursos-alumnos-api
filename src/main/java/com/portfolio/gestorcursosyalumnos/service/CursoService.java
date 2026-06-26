@@ -24,7 +24,9 @@ import java.util.List;
 public class CursoService {
     private final CursoRepository repository;
 
-    //CREATE
+    //CREATE ¿ES BUENA IDEA NORMALIZAR LOS NOMBRES? ¿Por qué propongo esto? Imagina que: Fundamentos de Programación y Fundamentos de programación
+    //Si estoy diferenciandolos por el nombre, es lógico normalizar
+    //TODO NORMALIZAR LOS NOMBRES
     public void registrarCurso(CrearCursoDto dto){
         if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
             throw new CursoYaRegistradoException(
