@@ -35,7 +35,7 @@ public class AlumnoService {
     public void registrarAlumno(CrearAlumnoDto dto){
         String emailDto = dto.getEmail().toLowerCase().trim();
         if (alumnoRepository.buscarPorEmail(dto.getEmail()).isPresent()){
-            throw new AlumnoYaRegistradoException("El alumno ya fue registrado.");
+            throw new AlumnoYaRegistradoException("Ya existe un alumno registrado con el email: "+emailDto);
         }
 
         validarFechaNacimiento(dto.getFechaNacimiento());
@@ -111,7 +111,7 @@ public class AlumnoService {
             if (!emailDto.equals(alumno.getEmail())){
                 if (alumnoRepository.buscarPorEmail(dto.getEmail()).isPresent()){
                     throw new AlumnoYaRegistradoException(
-                            "Ya existe un alumno con este email.");
+                            "Ya existe un alumno con el email: "+emailDto);
                 }
                 alumno.setEmail(emailDto);
             }
@@ -119,6 +119,12 @@ public class AlumnoService {
 
         if (dto.getFechaNacimiento()!=null){
             validarFechaNacimiento(dto.getFechaNacimiento());
+        }
+
+        if (dto.getIdCurso()!=null){
+            Curso curso= cursoRepository.findById(dto.getIdCurso())
+                    .orElseThrow(() -> new CursoNoEncontradoException("El curso no fue encontrado."));
+            alumno.setCurso(curso);
         }
 
         AlumnoMapper.updateToAlumno(dto,alumno);
@@ -142,6 +148,12 @@ public class AlumnoService {
 
         if (dto.getFechaNacimiento()!=null){
             validarFechaNacimiento(dto.getFechaNacimiento());
+        }
+
+        if (dto.getIdCurso()!=null){
+            Curso curso= cursoRepository.findById(dto.getIdCurso())
+                    .orElseThrow(() -> new CursoNoEncontradoException("El curso no fue encontrado."));
+            alumno.setCurso(curso);
         }
 
         AlumnoMapper.updateToAlumno(dto,alumno);

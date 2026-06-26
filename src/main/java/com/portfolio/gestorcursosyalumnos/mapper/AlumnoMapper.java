@@ -16,7 +16,7 @@ public class AlumnoMapper {
                 .build();
     }
 
-    public static Alumno updateToAlumno (AlumnoActualizacionDto dto, Alumno alumno){
+    public static void updateToAlumno (AlumnoActualizacionDto dto, Alumno alumno){
         if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
             alumno.setNombre(dto.getNombre());
         }
@@ -24,7 +24,6 @@ public class AlumnoMapper {
         if (dto.getFechaNacimiento()!=null){
             alumno.setFechaNacimiento(dto.getFechaNacimiento());
         }
-        return alumno;
     }
 
     public static RespuestaAlumnoDto alumnoToDto(Alumno alumno){
