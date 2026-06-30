@@ -9,25 +9,18 @@ public class CursoMapper {
 
     public static Curso dtoToCurso(CrearCursoDto dto){
         return Curso.builder()
-                .nombre(dto.getNombre())
+                .nombre(dto.getNombre().toLowerCase())
                 .descripcion(dto.getDescripcion())
                 .duracion(dto.getDuracion())
                 .build();
     }
 
-    public static Curso updateToCurso(CursoActualizacionDto dto, Curso curso){
-        if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
-            curso.setNombre(dto.getNombre());
-        }
+    public static void updateToCurso(CursoActualizacionDto dto, Curso curso){
 
         if (dto.getDescripcion()!=null&&!dto.getDescripcion().isEmpty()){
             curso.setDescripcion(dto.getDescripcion());
         }
 
-        if (dto.getDuracion()!=null&&dto.getDuracion()>=1){
-            curso.setDuracion(dto.getDuracion());
-        }
-        return curso;
     }
 
     public static RespuestaCursoDto cursoToDto(Curso curso){

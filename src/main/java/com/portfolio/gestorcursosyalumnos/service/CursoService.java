@@ -5,6 +5,7 @@ import com.portfolio.gestorcursosyalumnos.dto.CursoActualizacionDto;
 import com.portfolio.gestorcursosyalumnos.dto.RespuestaAlumnoDto;
 import com.portfolio.gestorcursosyalumnos.dto.RespuestaCursoDto;
 import com.portfolio.gestorcursosyalumnos.exception.CursoNoEncontradoException;
+import com.portfolio.gestorcursosyalumnos.exception.CursoOcupadoException;
 import com.portfolio.gestorcursosyalumnos.exception.CursoYaRegistradoException;
 import com.portfolio.gestorcursosyalumnos.mapper.AlumnoMapper;
 import com.portfolio.gestorcursosyalumnos.mapper.CursoMapper;
@@ -24,13 +25,10 @@ import java.util.List;
 public class CursoService {
     private final CursoRepository repository;
 
-    //CREATE ¿ES BUENA IDEA NORMALIZAR LOS NOMBRES? ¿Por qué propongo esto? Imagina que: Fundamentos de Programación y Fundamentos de programación
-    //Si estoy diferenciandolos por el nombre, es lógico normalizar
-    //TODO NORMALIZAR LOS NOMBRES
     public void registrarCurso(CrearCursoDto dto){
-        if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
+        if (repository.buscarPorNombre(dto.getNombre().toLowerCase()).isPresent()){
             throw new CursoYaRegistradoException(
-                    "El curso ya fue registrado. Los cursos deben tener un nombre único.");
+                    "Ya existe un curso registrado con el nombre: "+dto.getNombre());
         }
 
         Curso curso = CursoMapper.dtoToCurso(dto);
@@ -84,44 +82,80 @@ public class CursoService {
     //UPDATE
     @Transactional
     public void actualizarCursoPorId(Long id, CursoActualizacionDto dto){
-        Curso original = encontrarPorId(id);
+        Curso curso = encontrarPorId(id);
 
         if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
-            if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
-            throw new CursoYaRegistradoException(
-                    "El curso ya fue registrado. Los nombres deben ser únicos");
+            String dtoNombre = dto.getNombre().toLowerCase();
+            if (!curso.getNombre().equalsIgnoreCase(dtoNombre)){
+                if (repository.buscarPorNombre(dtoNombre).isPresent()){
+                    throw new CursoYaRegistradoException(
+                            "Ya existe un curso registrado con el nombre: "+dto.getNombre());
+                }
             }
+            curso.setNombre(dtoNombre);
         }
 
-        Curso update = CursoMapper.updateToCurso(dto, original);
-        repository.save(update);
+        if (dto.getDuracion()!=null){
+            validarDuracionDelCurso(dto.getDuracion());
+            curso.setDuracion(dto.getDuracion());
+        }
+
+        CursoMapper.updateToCurso(dto, curso);
     }
 
     @Transactional
     public void actualizarCursoPorNombre(String nombre, CursoActualizacionDto dto){
-        Curso original = encontrarPorNombre(nombre);
+        Curso curso = encontrarPorNombre(nombre.toLowerCase());
 
         if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
-            if (repository.buscarPorNombre(dto.getNombre()).isPresent()){
-                throw new CursoYaRegistradoException(
-                        "El curso ya fue registrado. Los nombres deben ser únicos");
+            String dtoNombre = dto.getNombre().toLowerCase();
+            if (!curso.getNombre().equalsIgnoreCase(dtoNombre)){
+                if (repository.buscarPorNombre(dtoNombre).isPresent()){
+                    throw new CursoYaRegistradoException(
+                            "Ya existe un curso registrado con el nombre: "+dto.getNombre());
+                }
             }
+            curso.setNombre(dtoNombre);
         }
 
-        Curso update = CursoMapper.updateToCurso(dto, original);
-        repository.save(update);
+        if (dto.getDuracion()!=null){
+            validarDuracionDelCurso(dto.getDuracion());
+            curso.setDuracion(dto.getDuracion());
+        }
+
+        CursoMapper.updateToCurso(dto, curso);
+
     }
 
+    public void validarDuracionDelCurso(Integer horas){
+        if (horas<1){
+            throw new IllegalArgumentException("Los cursos deben durar almenos una hora.");
+        }
+    }
 
     //DELETE
     public void eliminarCursoPorId(Long id){
-        Curso curso = encontrarPorId(id);
-        repository.delete(curso);
+        Curso curso = repository.cursoCompletoPorId(id)
+                .orElseThrow(()-> new CursoNoEncontradoException("El curso con id: "+id+", no fue encontrado."));
+
+        if (!curso.getAlumnos().isEmpty()){
+            throw new CursoOcupadoException("El curso no puede ser eliminado porque hay alumnos matriculados en él.");
+        }else {
+            repository.deleteById(id);
+        }
+
     }
 
     public void eliminarCursoPorNombre(String nombre){
-        Curso curso = encontrarPorNombre(nombre);
-        repository.delete(curso);
+        Curso curso = repository.cursoCompletoPorNombre(nombre)
+                .orElseThrow(()-> new CursoNoEncontradoException("El curso con id: "+nombre+", no fue encontrado."));
+
+        if (!curso.getAlumnos().isEmpty()){
+            throw new CursoOcupadoException("El curso no puede ser eliminado porque hay alumnos matriculados en él.");
+        }else {
+            repository.deleteById(curso.getId());
+        }
     }
 
 }
+

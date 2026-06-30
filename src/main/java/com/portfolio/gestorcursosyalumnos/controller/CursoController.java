@@ -183,7 +183,9 @@ public class CursoController {
     @Parameter(name = "id", description = "Los id comienzan desde 1", required = true, example = "1")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Curso eliminado"),
-            @ApiResponse(responseCode = "404", description = "Elemento no encontrado")})
+            @ApiResponse(responseCode = "404", description = "Elemento no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Argumento invalido")
+    })
     @DeleteMapping("/curso/id/{id}")
     public ResponseEntity<Void> eliminarCursoPorId(@PathVariable Long id){
        cursoService.eliminarCursoPorId(id);
@@ -197,7 +199,8 @@ public class CursoController {
     @Parameter(name = "nombre", description = "Ingresa el nombre del curso", required = true, example = "Diseño")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Curso eliminado"),
-            @ApiResponse(responseCode = "404", description = "Elemento no encontrado")})
+            @ApiResponse(responseCode = "404", description = "Elemento no encontrado"),
+            @ApiResponse(responseCode = "400", description = "Argumento invalido")})
     @DeleteMapping("/curso/nombre/{nombre}")
     public ResponseEntity<Void> eliminarCursoPorNombre(@PathVariable String nombre){
         cursoService.eliminarCursoPorNombre(nombre);

@@ -19,5 +19,15 @@ public interface CursoRepository extends JpaRepository<Curso, Long> {
     @Query("SELECT c.alumnos FROM Curso c WHERE c.nombre=:name")
     List<Alumno> buscarAlumnosPorNombreCurso(String name);
 
+    @Query("SELECT c " +
+            "FROM Curso c LEFT JOIN FETCH c.alumnos " +
+            "WHERE c.id=:id")
+    Optional<Curso> cursoCompletoPorId(Long id);
+
+    @Query("SELECT c " +
+            "FROM Curso c LEFT JOIN FETCH c.alumnos " +
+            "WHERE c.nombre=:nombre")
+    Optional<Curso> cursoCompletoPorNombre(String nombre);
+
 
 }

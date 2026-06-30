@@ -29,7 +29,7 @@ public class CursoActualizacionDto {
 
     @Min(1)
     @Schema(
-            description = "Nueva duración en horas del curso. Un curso no debe durar menos de 1 hora",
+            description = "Nueva duración en horas del curso. Un curso debe durar almenos una hora",
             example = "1"
     )
     private Integer duracion;

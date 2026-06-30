@@ -62,4 +62,11 @@ public class GlobalExceptionHandler {
                 .body(ErrorResponse.builder().message(ex.getMessage()).status(409).build());
     }
 
+    @ExceptionHandler(CursoOcupadoException.class)
+    public ResponseEntity<ErrorResponse>handlerCursoOcupadoException(CursoOcupadoException ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ErrorResponse.builder().message(ex.getMessage()).status(400).build());
+    }
+
+
 }
