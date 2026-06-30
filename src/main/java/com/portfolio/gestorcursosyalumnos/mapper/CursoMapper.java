@@ -17,7 +17,7 @@ public class CursoMapper {
 
     public static void updateToCurso(CursoActualizacionDto dto, Curso curso){
 
-        if (dto.getDescripcion()!=null&&!dto.getDescripcion().isEmpty()){
+        if (dto.getDescripcion()!=null&&!dto.getDescripcion().isBlank()){
             curso.setDescripcion(dto.getDescripcion());
         }
 

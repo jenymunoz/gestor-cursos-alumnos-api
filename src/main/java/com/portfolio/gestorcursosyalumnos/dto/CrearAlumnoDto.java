@@ -31,7 +31,7 @@ public class CrearAlumnoDto {
 
     @NotNull
     @Schema(
-            description = "Fecha de nacimiento. No menores de 5 años",
+            description = "Fecha de nacimiento. Formato de fecha: año-mes-día",
             example = "2001-04-15"
     )
     private LocalDate fechaNacimiento;

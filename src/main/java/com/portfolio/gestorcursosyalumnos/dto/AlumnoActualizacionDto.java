@@ -29,7 +29,7 @@ public class AlumnoActualizacionDto {
     private String email;
 
     @Schema(
-            description = "Nueva fecha de nacimiento. No se admiten alumnos menores de 5 años",
+            description = "Nueva fecha de nacimiento. Formato de fecha: año-mes-día",
             example = "2020-10-16"
     )
     private LocalDate fechaNacimiento;

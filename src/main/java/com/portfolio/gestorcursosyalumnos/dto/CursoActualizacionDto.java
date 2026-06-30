@@ -1,6 +1,7 @@
 package com.portfolio.gestorcursosyalumnos.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -27,10 +28,10 @@ public class CursoActualizacionDto {
     )
     private String descripcion;
 
-    @Min(1)
+    @Min(5) @Max(3000)
     @Schema(
-            description = "Nueva duración en horas del curso. Un curso debe durar almenos una hora",
-            example = "1"
+            description = "Nueva duración en horas del curso. Un curso debe durar almenos 5 horas",
+            example = "5"
     )
     private Integer duracion;
 }

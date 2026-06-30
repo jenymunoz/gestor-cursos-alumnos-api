@@ -17,7 +17,7 @@ public class AlumnoMapper {
     }
 
     public static void updateToAlumno (AlumnoActualizacionDto dto, Alumno alumno){
-        if (dto.getNombre()!=null&&!dto.getNombre().isEmpty()){
+        if (dto.getNombre()!=null&&!dto.getNombre().isBlank()){
             alumno.setNombre(dto.getNombre());
         }
 

@@ -28,10 +28,10 @@ public class CrearCursoDto {
     private String descripcion;
 
     @NotNull
-    @Min(1)
+    @Min(5) @Max(3000)
     @Schema(
-            description = "Total de horas que dura el curso",
-            example = "3"
+            description = "Total de horas que dura el curso. Un curso debe durar almenos 5 horas",
+            example = "5"
     )
     private int duracion;
 }
